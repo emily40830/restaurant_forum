@@ -56,7 +56,7 @@ const main = (app, passport) => {
     adminController.editRestaurant,
   );
   app.put(
-    '/admin/restaurant/:id',
+    '/admin/restaurants/:id',
     authenticatedAdmin,
     upload.single('image'),
     adminController.putRestaurant,
