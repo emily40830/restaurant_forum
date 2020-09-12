@@ -131,7 +131,7 @@ const adminController = {
       req.flash('error_messages', 'user is not existed.');
       return res.redirect('back');
     }
-    if (req.user.id === req.params.id) {
+    if (req.user.id === Number(req.params.id)) {
       req.flash('error_messages', 'can not change role yourself.');
       return res.redirect('back');
     }
