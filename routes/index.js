@@ -47,6 +47,16 @@ const main = (app, passport) => {
     authenticatedAdmin,
     adminController.getRestaurant,
   );
+  app.get(
+    '/admin/restaurants/:id/edit',
+    authenticatedAdmin,
+    adminController.editRestaurant,
+  );
+  app.put(
+    '/admin/restaurant/:id',
+    authenticatedAdmin,
+    adminController.putRestaurant,
+  );
 
   // 登入/註冊
   app.get('/signup', userController.signUpPage);
