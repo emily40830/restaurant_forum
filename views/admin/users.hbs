@@ -28,11 +28,6 @@
         <form action="/admin/users/{{this.id}}?_method=PUT" method="POST" style="display: inline;">
           <a href="" data-toggle="modal" data-target="#change-modal-{{this.id}}">Set as
             {{#if this.isAdmin}}user{{else}}admin{{/if}}</a>
-          <!-- <input class="toggle-change-role" type="checkbox" #if isAdmin checked
-        data-toggle="toggle"
-          data-on="Admin" data-off="User" data-style="ios" data-onstyle="success" data-offstyle="danger"
-          onchange="document.getElementById('change-modal').show()"> -->
-
           <!-- Modal start-->
           <div class="modal fade" id="change-modal-{{this.id}}" tabindex="-1" role="dialog"
             aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -46,12 +41,13 @@
                 </div>
 
                 <div class="modal-body">
-                  是否要將<span class="modal-info">{{this.name}}</span>設定為{{#if this.isAdmin}}user{{else}}admin{{/if}}?
+                  是否要將<span class="modal-info"> {{this.name}} </span>設定為{{#if this.isAdmin}} user {{else}} admin
+                  {{/if}}?
                   <br>
                 </div>
 
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                  <a href="/admin/users" type="button" class="btn btn-primary" data-dismiss="modal">Cancel</a>
 
                   <button type="submit" class="btn btn-danger">Confirm</button>
 

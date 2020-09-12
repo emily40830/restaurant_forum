@@ -4,3 +4,6 @@
 //   console.log(event);
 //   $('#change-modal').modal('show');
 // });
+const confirmModal = (userid) => {
+  $(`#change-modal-${userid}`).modal('show');
+};

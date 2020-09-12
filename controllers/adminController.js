@@ -131,11 +131,20 @@ const adminController = {
       req.flash('error_messages', 'user is not existed.');
       return res.redirect('back');
     }
+    if (req.user.id === req.params.id) {
+      req.flash('error_messages', 'can not change role yourself.');
+      return res.redirect('back');
+    }
     return User.findByPk(req.params.id).then((user) => {
-      user.update({ isAdmin: user.isAdmin ? false : true }).then(() => {
-        req.flash('success_messages', 'User was successfully updated.');
-        res.redirect('/admin/users');
-      });
+      if (user.email === 'root@example.com') {
+        req.flash('error_messages', 'root can not be changed.');
+        return res.redirect('back');
+      } else {
+        user.update({ isAdmin: user.isAdmin ? false : true }).then(() => {
+          req.flash('success_messages', 'User was successfully updated.');
+          res.redirect('/admin/users');
+        });
+      }
     });
   },
 };
