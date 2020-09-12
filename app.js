@@ -9,7 +9,7 @@ const methodOverride = require('method-override');
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
 }
-
+require('tls').DEFAULT_MIN_VERSION = 'TLSv1';
 const app = express();
 const port = process.env.PORT;
 
