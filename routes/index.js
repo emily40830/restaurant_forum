@@ -57,6 +57,11 @@ const main = (app, passport) => {
     authenticatedAdmin,
     adminController.putRestaurant,
   );
+  app.delete(
+    '/admin/restaurants/:id',
+    authenticatedAdmin,
+    adminController.deleteRestaurant,
+  );
 
   // 登入/註冊
   app.get('/signup', userController.signUpPage);
