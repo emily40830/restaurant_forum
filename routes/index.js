@@ -23,6 +23,10 @@ const main = (app, passport) => {
   app.get('/', authenticated, (req, res) => res.redirect('/restaurants'));
   app.get('/restaurants', authenticated, restController.getRestaurants);
 
+  // 更改使用者相關之路由 admin/users
+  app.get('/admin/users', authenticatedAdmin, adminController.getUsers);
+  app.put('/admin/users/:id', authenticatedAdmin, adminController.putUser);
+
   // 連到admin頁面就轉到 /admin/restaurants
   app.get('/admin', authenticatedAdmin, (req, res) =>
     res.redirect('/admin/restaurants'),
