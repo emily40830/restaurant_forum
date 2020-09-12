@@ -1,7 +1,7 @@
 const db = require('../models');
 //const fs = require('fs');
 const imgur = require('imgur-node-api');
-
+const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID;
 const Restaurant = db.Restaurant;
 
 const adminController = {
@@ -33,7 +33,7 @@ const adminController = {
       imgur.upload(file.path, (err, img) => {
         return Restaurant.create({
           name: req.body.name,
-          tel: teq.body.tel,
+          tel: req.body.tel,
           address: req.body.address,
           opening_hours: req.body.opening_hours,
           description: req.body.description,
