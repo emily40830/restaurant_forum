@@ -30,6 +30,11 @@ const main = (app, passport) => {
     authenticatedAdmin,
     categoryController.getCategories,
   );
+  app.post(
+    '/admin/categories',
+    authenticatedAdmin,
+    categoryController.postCategories,
+  );
 
   // 更改使用者相關之路由 admin/users
   app.get('/admin/users', authenticatedAdmin, adminController.getUsers);
