@@ -32,7 +32,7 @@ const categoryController = {
     }
   },
   putCategories: (req, res) => {
-    console.log(req.body);
+    //console.log(req.body);
     if (!req.body.name) {
       req.flash('error_messages', 'name did not exist.');
       return res.redirect('back');
@@ -43,6 +43,13 @@ const categoryController = {
         });
       });
     }
+  },
+  deleteCategories: (req, res) => {
+    return Category.findByPk(req.params.id).then((category) => {
+      return category.destroy().then(() => {
+        res.redirect('/admin/categories');
+      });
+    });
   },
 };
 

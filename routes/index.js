@@ -45,6 +45,11 @@ const main = (app, passport) => {
     authenticatedAdmin,
     categoryController.putCategories,
   );
+  app.delete(
+    '/admin/categories/:id',
+    authenticatedAdmin,
+    categoryController.deleteCategories,
+  );
 
   // 更改使用者相關之路由 admin/users
   app.get('/admin/users', authenticatedAdmin, adminController.getUsers);
