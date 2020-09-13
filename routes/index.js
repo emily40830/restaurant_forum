@@ -1,6 +1,7 @@
 const restController = require('../controllers/restController.js');
 const adminController = require('../controllers/adminController.js');
-const userController = require('../controllers/userController');
+const userController = require('../controllers/userController.js');
+const categoryController = require('../controllers/categoryController.js');
 const multer = require('multer');
 const upload = multer({ dest: 'temp/' });
 
@@ -22,6 +23,13 @@ const main = (app, passport) => {
   };
   app.get('/', authenticated, (req, res) => res.redirect('/restaurants'));
   app.get('/restaurants', authenticated, restController.getRestaurants);
+
+  // 更改餐廳分類之相關路由 admin/categories
+  app.get(
+    '/admin/categories',
+    authenticatedAdmin,
+    categoryController.getCategories,
+  );
 
   // 更改使用者相關之路由 admin/users
   app.get('/admin/users', authenticatedAdmin, adminController.getUsers);
