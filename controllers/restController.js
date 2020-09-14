@@ -13,7 +13,6 @@ const restController = {
       }));
       return res.render('restaurants', { restaurants: data });
     });
-    return res.render('restaurants');
   },
 };
 
