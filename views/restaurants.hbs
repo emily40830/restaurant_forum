@@ -1,3 +1,14 @@
+<ul class="nav nav-pills">
+  <li class="nav-item">
+    <a class="nav-link" href="?categoryId=">All</a>
+  </li>
+  {{#each categories}}
+  <li class="nav-item">
+    <a class="nav-link" href="?categoryId={{this.id}}">{{this.name}}</a>
+  </li>
+  {{/each}}
+</ul>
+<br />
 <div class="row mt-5">
   {{#each restaurants}}
   <div class="col-md-4">
