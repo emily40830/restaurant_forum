@@ -8,7 +8,8 @@ const restController = {
     let whereQuery = {};
     let categoryId = '';
     if (req.query.categoryId) {
-      categoryId = Number(req.query.id);
+      //console.log(req.query.categoryId);
+      categoryId = Number(req.query.categoryId);
       whereQuery.CategoryId = categoryId;
     }
     Restaurant.findAll({ include: Category, where: whereQuery }).then(
