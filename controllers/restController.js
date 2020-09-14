@@ -14,6 +14,18 @@ const restController = {
       return res.render('restaurants', { restaurants: data });
     });
   },
+  getRestaurant: (req, res) => {
+    return Restaurant.findByPk(req.params.id, {
+      raw: true,
+      nest: true,
+      include: Category,
+    }).then((restaurant) => {
+      console.log(restaurant);
+      return res.render('restaurant', {
+        restaurant,
+      });
+    });
+  },
 };
 
 module.exports = restController;
