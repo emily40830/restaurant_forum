@@ -2,6 +2,9 @@ const db = require('../models');
 const Category = db.Category;
 const Restaurant = db.Restaurant;
 
+const Comment = db.Comment;
+const User = db.User;
+
 const pageLimit = 10; //每頁有的餐廳數量
 
 const restController = {
@@ -62,8 +65,9 @@ const restController = {
     return Restaurant.findByPk(req.params.id, {
       raw: true,
       nest: true,
-      include: Category,
+      include: [Category, { model: Comment, include: [User] }],
     }).then((restaurant) => {
+      console.log(restaurant.Comments[0].dataValues);
       //console.log(restaurant);
       return res.render('restaurant', {
         restaurant,
