@@ -63,14 +63,12 @@ const restController = {
 
   getRestaurant: (req, res) => {
     return Restaurant.findByPk(req.params.id, {
-      raw: true,
-      nest: true,
       include: [Category, { model: Comment, include: [User] }],
     }).then((restaurant) => {
-      console.log(restaurant.Comments[0].dataValues);
+      console.log(restaurant.Comments);
       //console.log(restaurant);
       return res.render('restaurant', {
-        restaurant,
+        restaurant: restaurant.toJSON(),
       });
     });
   },
