@@ -56,7 +56,7 @@ const userController = {
         //console.log(user);
         if (user != null) {
           Comment.findAll({
-            where: { UserId: req.user.id },
+            where: { UserId: req.params.id },
             attributes: ['RestaurantId'],
             group: ['RestaurantId'],
             include: [Restaurant],
