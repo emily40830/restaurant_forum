@@ -65,8 +65,8 @@ const userController = {
           }).then((restaurants) => {
             console.log(restaurants);
             res.render('profile', {
-              user,
-              self: req.user,
+              user: req.user, //self
+              object: user,
               restaurants,
               cnt: restaurants.length,
             });

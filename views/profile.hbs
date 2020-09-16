@@ -1,17 +1,17 @@
 <div class="row">
 
   <div class="card col-4" style="width: 18rem;">
-    <img class="card-img-top" src="{{user.image}}" alt="Card image cap" style="width: 20rem">
+    <img class="card-img-top" src="{{object.image}}" alt="Card image cap" style="width: 20rem">
   </div>
   <div class="card col-8">
     <div class="card-header">
       Profile
     </div>
     <div class="card-body">
-      <h5 class="card-title">{{user.name}}</h5>
-      <p class="card-text">{{user.email}}</p>
-      {{#ifCond user.id self.id}}
-      <a href="/users/{{../user.id}}/edit" class="btn btn-primary">Edit</a>
+      <h5 class="card-title">{{object.name}}</h5>
+      <p class="card-text">{{object.email}}</p>
+      {{#ifCond object.id user.id}}
+      <a href="/users/{{../object.id}}/edit" class="btn btn-primary">Edit</a>
       {{/ifCond}}
     </div>
   </div>
