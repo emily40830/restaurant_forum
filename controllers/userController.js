@@ -1,6 +1,8 @@
 const bcrypt = require('bcryptjs');
 const db = require('../models');
 const User = db.User;
+const Comment = db.Comment;
+const Restaurant = db.Restaurant;
 const fs = require('fs');
 const imgur = require('imgur-node-api');
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID;
@@ -51,9 +53,24 @@ const userController = {
   getUser: (req, res) => {
     return User.findByPk(req.params.id, { raw: true, nest: true }).then(
       (user) => {
-        console.log(user);
+        //console.log(user);
         if (user != null) {
-          res.render('profile', { user, self: req.user });
+          Comment.findAll({
+            where: { UserId: req.user.id },
+            attributes: ['RestaurantId'],
+            group: ['RestaurantId'],
+            include: [Restaurant],
+            raw: true,
+            nest: true,
+          }).then((restaurants) => {
+            console.log(restaurants);
+            res.render('profile', {
+              user,
+              self: req.user,
+              restaurants,
+              cnt: restaurants.length,
+            });
+          });
         } else {
           req.flash('error_messages', 'User is not existed');
           res.redirect(`/users/${req.user.id}`);

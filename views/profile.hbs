@@ -15,4 +15,17 @@
       {{/ifCond}}
     </div>
   </div>
+  <div class="card col-12 mt-3">
+    <div class="card-header">
+      {{cnt}} 已評論的餐廳
+    </div>
+    <div class="card-body">
+      {{#each restaurants}}
+      <a href="/restaurants/{{this.RestaurantId}}">
+        <img class="mr-1" src="{{this.Restaurant.image}}" alt="{{this.Restaurant.name}}" style="height:5rem">
+      </a>
+      {{/each}}
+    </div>
+  </div>
+
 </div>
