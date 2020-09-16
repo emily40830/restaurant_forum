@@ -51,8 +51,13 @@ const userController = {
   getUser: (req, res) => {
     return User.findByPk(req.params.id, { raw: true, nest: true }).then(
       (user) => {
-        console.log(req.user);
-        res.render('profile', { user, self: req.user });
+        console.log(user);
+        if (user != null) {
+          res.render('profile', { user, self: req.user });
+        } else {
+          req.flash('error_messages', 'User is not existed');
+          res.redirect(`/users/${req.user.id}`);
+        }
       },
     );
   },
