@@ -26,6 +26,11 @@ const main = (app, passport) => {
   app.get('/', authenticated, (req, res) => res.redirect('/restaurants'));
   app.get('/restaurants', authenticated, restController.getRestaurants);
   app.get('/restaurants/feeds', authenticated, restController.getFeeds);
+  app.get(
+    '/restaurants/dashboard/:id',
+    authenticated,
+    restController.getDashboard,
+  );
   app.get('/restaurants/:id', authenticated, restController.getRestaurant);
 
   // 更改餐廳分類之相關路由 admin/categories

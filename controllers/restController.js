@@ -65,7 +65,7 @@ const restController = {
     return Restaurant.findByPk(req.params.id, {
       include: [Category, { model: Comment, include: [User] }],
     }).then((restaurant) => {
-      console.log(restaurant.Comments);
+      //console.log(restaurant.Comments);
       //console.log(restaurant);
       return res.render('restaurant', {
         restaurant: restaurant.toJSON(),
@@ -92,6 +92,21 @@ const restController = {
           comments,
         });
       });
+    });
+  },
+  getDashboard: (req, res) => {
+    return Restaurant.findByPk(req.params.id, {
+      include: [Category],
+      raw: true,
+      nest: true,
+    }).then(async (restaurant) => {
+      const comments_cnt = await Comment.count({
+        where: { RestaurantId: req.params.id },
+      });
+      //Comment.findAll({where: { RestaurantId: req.params.id }});
+      console.log(restaurant);
+      console.log(comments_cnt);
+      return res.render('restDashboard', { restaurant, comments_cnt });
     });
   },
 };
