@@ -45,9 +45,6 @@ const restController = {
         raw: true,
         nest: true,
       }).then((categories) => {
-        console.log(page);
-        console.log(pages);
-        console.log(totalPages);
         return res.render('restaurants', {
           restaurants: data,
           categories,
@@ -61,7 +58,12 @@ const restController = {
     });
   },
 
-  getRestaurant: (req, res) => {
+  getRestaurant: async (req, res) => {
+    // caculate the click times
+    const target = await Restaurant.findByPk(req.params.id);
+    target.viewCounts += 1;
+    await target.save();
+
     return Restaurant.findByPk(req.params.id, {
       include: [Category, { model: Comment, include: [User] }],
     }).then((restaurant) => {
@@ -94,7 +96,12 @@ const restController = {
       });
     });
   },
-  getDashboard: (req, res) => {
+  getDashboard: async (req, res) => {
+    // caculate the click times
+    const target = await Restaurant.findByPk(req.params.id);
+    target.viewCounts += 1;
+    await target.save();
+
     return Restaurant.findByPk(req.params.id, {
       include: [Category],
       raw: true,
@@ -104,8 +111,8 @@ const restController = {
         where: { RestaurantId: req.params.id },
       });
       //Comment.findAll({where: { RestaurantId: req.params.id }});
-      console.log(restaurant);
-      console.log(comments_cnt);
+      //console.log(restaurant);
+      //console.log(comments_cnt);
       return res.render('restDashboard', { restaurant, comments_cnt });
     });
   },
