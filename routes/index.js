@@ -33,6 +33,18 @@ const main = (app, passport) => {
   );
   app.get('/restaurants/:id', authenticated, restController.getRestaurant);
 
+  //favorite
+  app.post(
+    '/favorite/:restaurantId',
+    authenticated,
+    userController.addFavorite,
+  );
+  app.delete(
+    '/favorite/:restaurantId',
+    authenticated,
+    userController.removeFavorite,
+  );
+
   // 更改餐廳分類之相關路由 admin/categories
   app.get(
     '/admin/categories',
