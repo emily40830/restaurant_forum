@@ -48,6 +48,7 @@ const main = (app, passport) => {
   //Like/unlike
   app.post('/like/:restaurantId/unlike', authenticated, userController.unLike);
   app.post('/like/:restaurantId', authenticated, userController.addLike);
+
   // 更改餐廳分類之相關路由 admin/categories
   app.get(
     '/admin/categories',
@@ -146,6 +147,7 @@ const main = (app, passport) => {
   );
 
   // user
+  app.get('/users/top', authenticated, userController.getTopUser);
   app.get('/users/:id', authenticated, userController.getUser);
   app.get('/users/:id/edit', authenticated, userController.editUser);
   app.put(

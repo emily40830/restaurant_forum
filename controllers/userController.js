@@ -216,6 +216,24 @@ const userController = {
       }
     });
   },
+  getTopUser: (req, res) => {
+    // 撈出所有 User 與 followers 資料
+    return User.findAll({
+      include: [{ models: Followship, as: 'Followers' }],
+    }).then((users) => {
+      // 整理 users 資料
+      users = users.map((u) => ({
+        ...u.dataValues,
+        // 計算追蹤者
+        FollowerCount: u.Followers.length,
+        // 這位使用者自己有無追蹤
+        isFollowed: req.user.Followings.map((d) => d.id).includes(u.id),
+      }));
+      //依追蹤人數排序
+      users = users.sort((a, b) => b.FollowerCount - a.FollowerCount);
+      return res.render('topUser', { users });
+    });
+  },
 };
 
 module.exports = userController;
