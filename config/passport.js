@@ -43,8 +43,12 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser((id, done) => {
   User.findByPk(id, {
-    include: [{ model: Restaurant, as: 'FavoritedRestaurants' }],
+    include: [
+      { model: Restaurant, as: 'FavoritedRestaurants' },
+      { model: Restaurant, as: 'MyLikeRestaurants' },
+    ],
   }).then((user) => {
+    //console.log(user.MyLikeRestaurants);
     user = user.toJSON(); // 此處與影片示範不同
     return done(null, user);
   });

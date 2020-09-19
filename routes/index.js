@@ -45,6 +45,9 @@ const main = (app, passport) => {
     userController.removeFavorite,
   );
 
+  //Like/unlike
+  app.post('/like/:restaurantId/unlike', authenticated, userController.unLike);
+  app.post('/like/:restaurantId', authenticated, userController.addLike);
   // 更改餐廳分類之相關路由 admin/categories
   app.get(
     '/admin/categories',

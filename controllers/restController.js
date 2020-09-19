@@ -4,6 +4,7 @@ const Restaurant = db.Restaurant;
 
 const Comment = db.Comment;
 const User = db.User;
+const Like = db.Like;
 
 const pageLimit = 10; //每頁有的餐廳數量
 
@@ -35,12 +36,19 @@ const restController = {
       let prev = page - 1 < 1 ? 1 : page - 1;
       let next = page + 1 > pages ? pages : page + 1;
       // clean up restaurant data
+      //console.log(req.user.MyLikeRestaurants);
       const data = result.rows.map((r) => ({
         ...r.dataValues,
         description: r.dataValues.description.substring(0, 50),
         isFavorited: req.user.FavoritedRestaurants.map((d) => d.id).includes(
           r.id,
         ),
+        isLike:
+          req.user.MyLikeRestaurants.filter(
+            (u) => u.id === r.id && u.Like.is_like == true,
+          ).length === 0
+            ? false
+            : true,
         categoryName: r.dataValues.Category.name,
       }));
 
@@ -48,6 +56,7 @@ const restController = {
         raw: true,
         nest: true,
       }).then((categories) => {
+        //console.log(data);
         return res.render('restaurants', {
           restaurants: data,
           categories,
@@ -70,18 +79,29 @@ const restController = {
     return Restaurant.findByPk(req.params.id, {
       include: [
         Category,
+        //{ model: User, as: 'UsersWhoLikethisRest' },
         { model: User, as: 'FavoritedUsers' },
         { model: Comment, include: [User] },
       ],
-    }).then((restaurant) => {
-      //console.log(restaurant.Comments);
+    }).then(async (restaurant) => {
+      const like = await Like.findOne({
+        where: {
+          UserId: req.user.id,
+          RestaurantId: req.params.id,
+          is_like: true,
+        },
+        raw: true,
+      });
+      //console.log(like);
       const isFavorited = restaurant.FavoritedUsers.map((d) => d.id).includes(
         req.user.id,
       );
+      const isLike = like ? true : false;
       //console.log(restaurant.toJSON());
       return res.render('restaurant', {
         restaurant: restaurant.toJSON(),
         isFavorited,
+        isLike,
       });
     });
   },

@@ -4,7 +4,7 @@ const User = db.User;
 const Comment = db.Comment;
 const Restaurant = db.Restaurant;
 const Favorite = db.Favorite;
-const fs = require('fs');
+const Like = db.Like;
 const imgur = require('imgur-node-api');
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID;
 
@@ -155,6 +155,65 @@ const userController = {
       favorite.destroy().then(() => {
         return res.redirect('back');
       });
+    });
+  },
+  addLike: (req, res) => {
+    //await Like.reload();
+    return Like.findOne({
+      where: {
+        UserId: req.user.id,
+        RestaurantId: req.params.restaurantId,
+      },
+    }).then((like) => {
+      //await like.reload();
+      if (like) {
+        return like
+          .update({
+            is_like: true,
+          })
+          .then(() => {
+            return res.redirect('back');
+          });
+      } else {
+        return Like.create({
+          UserId: req.user.id,
+          RestaurantId: req.params.restaurantId,
+          is_like: true,
+        }).then(() => {
+          return res.redirect('back');
+        });
+      }
+    });
+  },
+  unLike: (req, res) => {
+    //await Like.reload();
+    return Like.findOne({
+      where: {
+        UserId: req.user.id,
+        RestaurantId: req.params.restaurantId,
+      },
+    }).then((like) => {
+      //await like.reload();
+      if (like.is_like === true) {
+        return like
+          .update({
+            is_like: false,
+          })
+          .then(() => {
+            return res.redirect('back');
+          });
+      } else if (like.is_like === false) {
+        req.flash('error_messages', '重複的操作！');
+        return res.redirect('back');
+      } else {
+        return Like.create({
+          UserId: req.user.id,
+          RestaurantId: req.params.restaurantId,
+          is_like: false,
+        }).then(() => {
+          return res.redirect('back');
+        });
+      }
     });
   },
 };
