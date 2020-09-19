@@ -63,11 +63,10 @@ const userController = {
       ],
       //raw: true,
       //nest: true,
-    }).then(async (user) => {
+    }).then((user) => {
       // user = user.map((u) => ({
       //   ...u.dataValues,
       // }));
-
       if (user != null) {
         user = user.dataValues;
         user.FavoritedRestaurants =
@@ -86,10 +85,6 @@ const userController = {
             : user.Followings.map((f) => ({
                 ...f.dataValues,
               }));
-        console.log(user);
-        console.log(user.FavoritedRestaurants);
-        console.log(user.Followers);
-        console.log(user.Followings);
         Comment.findAll({
           where: { UserId: req.params.id },
           attributes: ['RestaurantId'],
