@@ -1,10 +1,11 @@
 const db = require('../models');
+
 const Category = db.Category;
 const Restaurant = db.Restaurant;
-
 const Comment = db.Comment;
 const User = db.User;
 const Like = db.Like;
+const Favorite = db.Favorite;
 
 const pageLimit = 10; //每頁有的餐廳數量
 
@@ -145,6 +146,25 @@ const restController = {
       //console.log(restaurant);
       //console.log(comments_cnt);
       return res.render('restDashboard', { restaurant, comments_cnt });
+    });
+  },
+  getTopRestaurants: (req, res) => {
+    return Restaurant.findAll({
+      include: [{ model: User, as: 'FavoritedUsers' }],
+    }).then((restaurants) => {
+      restaurants = restaurants.map((r) => ({
+        ...r.dataValues,
+        FavoritedUsersCount: r.FavoritedUsers.length,
+        isFavorited: req.user.FavoritedRestaurants.map((d) => d.id).includes(
+          r.id,
+        ),
+      }));
+      //console.log(req.user.FavoritedRestaurants.map((d) => d.id));
+      restaurants = restaurants
+        .sort((a, b) => b.FavoritedUsersCount - a.FavoritedUsersCount)
+        .slice(0, 10);
+      //console.log(restaurants);
+      return res.render('topRestaurant', { restaurants });
     });
   },
 };

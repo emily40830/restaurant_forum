@@ -233,7 +233,7 @@ const userController = {
         // 這位使用者自己有無追蹤
         isFollowed: req.user.Followings.map((d) => d.id).includes(u.id),
       }));
-      //console.log('after', users);
+      console.log(users);
       //依追蹤人數排序
       users = users.sort((a, b) => b.FollowerCount - a.FollowerCount);
       return res.render('topUser', { users });
