@@ -55,32 +55,62 @@ const userController = {
     res.redirect('/signin');
   },
   getUser: (req, res) => {
-    return User.findByPk(req.params.id, { raw: true, nest: true }).then(
-      (user) => {
-        //console.log(user);
-        if (user != null) {
-          Comment.findAll({
-            where: { UserId: req.params.id },
-            attributes: ['RestaurantId'],
-            group: ['RestaurantId'],
-            include: [Restaurant],
-            raw: true,
-            nest: true,
-          }).then((restaurants) => {
-            console.log(restaurants);
-            res.render('profile', {
-              user: req.user, //self
-              object: user,
-              restaurants,
-              cnt: restaurants.length,
-            });
+    return User.findByPk(req.params.id, {
+      include: [
+        { model: Restaurant, as: 'FavoritedRestaurants' },
+        { model: User, as: 'Followers' },
+        { model: User, as: 'Followings' },
+      ],
+      //raw: true,
+      //nest: true,
+    }).then(async (user) => {
+      // user = user.map((u) => ({
+      //   ...u.dataValues,
+      // }));
+
+      if (user != null) {
+        user = user.dataValues;
+        user.FavoritedRestaurants =
+          user.FavoritedRestaurants.length === 0
+            ? []
+            : user.FavoritedRestaurants.map((r) => ({
+                ...r.dataValues,
+              }));
+        user.Followers =
+          user.Followers.length === 0
+            ? []
+            : user.Followers.map((f) => ({ ...f.dataValues }));
+        user.Followings =
+          user.Followings.length === 0
+            ? []
+            : user.Followings.map((f) => ({
+                ...f.dataValues,
+              }));
+        console.log(user);
+        console.log(user.FavoritedRestaurants);
+        console.log(user.Followers);
+        console.log(user.Followings);
+        Comment.findAll({
+          where: { UserId: req.params.id },
+          attributes: ['RestaurantId'],
+          group: ['RestaurantId'],
+          include: [Restaurant],
+          raw: true,
+          nest: true,
+        }).then((restaurants) => {
+          //console.log(restaurants);
+          res.render('profile', {
+            user: req.user, //self
+            object: user,
+            restaurants,
+            cnt: restaurants.length,
           });
-        } else {
-          req.flash('error_messages', 'User is not existed');
-          res.redirect(`/users/${req.user.id}`);
-        }
-      },
-    );
+        });
+      } else {
+        req.flash('error_messages', 'User is not existed');
+        res.redirect(`/users/${req.user.id}`);
+      }
+    });
   },
   editUser: (req, res) => {
     if (req.user.id !== Number(req.params.id)) {

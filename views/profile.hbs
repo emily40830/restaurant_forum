@@ -8,14 +8,63 @@
       Profile
     </div>
     <div class="card-body">
-      <h5 class="card-title">{{object.name}}</h5>
-      <p class="card-text">{{object.email}}</p>
-      {{#ifCond object.id user.id}}
-      <a href="/users/{{../object.id}}/edit" class="btn btn-primary">Edit</a>
-      {{/ifCond}}
+      <div class="row">
+        <div class="col-7">
+          <h5 class="card-title">{{object.name}}</h5>
+          <p class="card-text">{{object.email}}</p>
+          {{#ifCond object.id user.id}}
+          <a href="/users/{{../object.id}}/edit" class="btn btn-primary">Edit</a>
+          {{/ifCond}}
+        </div>
+        <div class="col-5">
+          <p class="card-text"><strong>{{object.Followers.length}}</strong> 位追蹤者</p>
+          <p class="card-text"><strong>{{object.Followings.length}}</strong> 位正在追蹤</p>
+          <p class="card-text"><strong>{{object.FavoritedRestaurants.length}}</strong> 已收藏的餐廳</p>
+          <p class="card-text"><strong>{{cnt}}</strong> 已評論的餐廳</p>
+        </div>
+      </div>
+
     </div>
   </div>
-  <div class="card col-12 mt-3">
+  <div class="card col-6 mt-3">
+    <div class="card-header">
+      {{object.Followers.length}} 位追蹤者
+    </div>
+    <div class="card-body">
+      {{#each object.Followers}}
+      <a href="/users/{{this.id}}">
+        <img class="mr-1" src="{{this.image}}" alt="{{this.name}}" style="height:5rem">
+      </a>
+      {{/each}}
+
+    </div>
+  </div>
+  <div class="card col-6 mt-3">
+    <div class="card-header">
+      {{object.Followings.length}} 位正在追蹤
+    </div>
+    <div class="card-body">
+      {{#each object.Followings}}
+      <a href="/users/{{this.id}}">
+        <img class="mr-1" src="{{this.image}}" alt="{{this.name}}" style="height:5rem">
+      </a>
+      {{/each}}
+    </div>
+  </div>
+  <div class="card col-6 mt-3">
+    <div class="card-header">
+      {{object.FavoritedRestaurants.length}} 已收藏的餐廳
+    </div>
+    <div class="card-body">
+      {{#each object.FavoritedRestaurants}}
+      <a href="/restaurants/{{this.id}}">
+        <img class="mr-1" src="{{this.image}}" alt="{{this.name}}" style="height:5rem">
+      </a>
+      {{/each}}
+    </div>
+  </div>
+
+  <div class="card col-6 mt-3">
     <div class="card-header">
       {{cnt}} 已評論的餐廳
     </div>
