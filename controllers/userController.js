@@ -224,7 +224,7 @@ const userController = {
     return User.findAll({
       include: [{ model: User, as: 'Followers' }],
     }).then((users) => {
-      console.log('before', users);
+      //console.log('before', users);
       // 整理 users 資料
       users = users.map((u) => ({
         ...u.dataValues,
@@ -233,10 +233,30 @@ const userController = {
         // 這位使用者自己有無追蹤
         isFollowed: req.user.Followings.map((d) => d.id).includes(u.id),
       }));
-      console.log('after', users);
+      //console.log('after', users);
       //依追蹤人數排序
       users = users.sort((a, b) => b.FollowerCount - a.FollowerCount);
       return res.render('topUser', { users });
+    });
+  },
+  addFollowing: (req, res) => {
+    return Followship.create({
+      followerId: req.user.id,
+      followingId: req.params.userId,
+    }).then(() => {
+      return res.redirect('back');
+    });
+  },
+  removeFollowing: (req, res) => {
+    return Followship.findOne({
+      where: {
+        followerId: req.user.id,
+        followingId: req.params.userId,
+      },
+    }).then((followship) => {
+      followship.destroy().then(() => {
+        return res.redirect('back');
+      });
     });
   },
 };

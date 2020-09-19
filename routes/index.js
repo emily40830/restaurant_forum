@@ -156,6 +156,13 @@ const main = (app, passport) => {
     upload.single('image'),
     userController.putUser,
   );
+  //following
+  app.post('/following/:userId', authenticated, userController.addFollowing);
+  app.delete(
+    '/following/:userId',
+    authenticated,
+    userController.removeFollowing,
+  );
 };
 
 module.exports = main;
