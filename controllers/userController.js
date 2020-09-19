@@ -68,23 +68,6 @@ const userController = {
       //   ...u.dataValues,
       // }));
       if (user != null) {
-        user = user.dataValues;
-        user.FavoritedRestaurants =
-          user.FavoritedRestaurants.length === 0
-            ? []
-            : user.FavoritedRestaurants.map((r) => ({
-                ...r.dataValues,
-              }));
-        user.Followers =
-          user.Followers.length === 0
-            ? []
-            : user.Followers.map((f) => ({ ...f.dataValues }));
-        user.Followings =
-          user.Followings.length === 0
-            ? []
-            : user.Followings.map((f) => ({
-                ...f.dataValues,
-              }));
         Comment.findAll({
           where: { UserId: req.params.id },
           attributes: ['RestaurantId'],
@@ -96,7 +79,7 @@ const userController = {
           //console.log(restaurants);
           res.render('profile', {
             user: req.user, //self
-            object: user,
+            object: user.toJSON(),
             restaurants,
             cnt: restaurants.length,
           });
@@ -133,7 +116,7 @@ const userController = {
     if (file) {
       imgur.setClientID(IMGUR_CLIENT_ID);
       imgur.upload(file.path, (err, img) => {
-        console.log(img);
+        //console.log(img);
         return User.findByPk(req.params.id).then((user) => {
           user
             .update({
@@ -258,7 +241,7 @@ const userController = {
         // 這位使用者自己有無追蹤
         isFollowed: req.user.Followings.map((d) => d.id).includes(u.id),
       }));
-      console.log(users);
+      //console.log(users);
       //依追蹤人數排序
       users = users.sort((a, b) => b.FollowerCount - a.FollowerCount);
       return res.render('topUser', { users });
