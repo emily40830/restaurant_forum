@@ -56,6 +56,13 @@ const categoryService = {
       });
     }
   },
+  deleteCategories: (req, res, callback) => {
+    return Category.findByPk(req.params.id).then((category) => {
+      return category.destroy().then(() => {
+        callback({ status: 'success', messages: '' });
+      });
+    });
+  },
 };
 
 module.exports = categoryService;

@@ -19,6 +19,13 @@ const categoryController = {
       return res.json(data);
     });
   },
+  deleteCategories: (req, res) => {
+    categoryService.deleteCategories(req, res, (data) => {
+      if (data.status === 'success') {
+        return res.json(data);
+      }
+    });
+  },
 };
 
 module.exports = categoryController;

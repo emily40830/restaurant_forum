@@ -23,6 +23,7 @@ router.delete('/admin/restaurants/:id', adminController.deleteRestaurant);
 // Category
 router.get('/admin/categories', categoryController.getCategories);
 router.post('/admin/categories', categoryController.postCategories);
-router.put('/admin/categories', categoryController.putCategories);
+router.put('/admin/categories/:id', categoryController.putCategories);
+router.delete('/admin/categories/:id', categoryController.deleteCategories);
 
 module.exports = router;
