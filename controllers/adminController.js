@@ -6,17 +6,22 @@ const Restaurant = db.Restaurant;
 const User = db.User;
 const Category = db.Category;
 
+const adminService = require('../services/adminService');
+
 const adminController = {
   getRestaurants: (req, res) => {
-    return Restaurant.findAll({
-      raw: true,
-      nest: true,
-      include: [Category],
-    }).then((restaurants) => {
-      //console.log(restaurants[0]);
-      return res.render('admin/restaurants', { restaurants: restaurants });
-      // get category name in handlebars:this.Category.name
+    adminService.getRestaurants(req, res, (data) => {
+      return res.render('admin/restaurants', data);
     });
+    // return Restaurant.findAll({
+    //   raw: true,
+    //   nest: true,
+    //   include: [Category],
+    // }).then((restaurants) => {
+    //   //console.log(restaurants[0]);
+    //   return res.render('admin/restaurants', { restaurants: restaurants });
+    //   // get category name in handlebars:this.Category.name
+    // });
   },
   getRestaurant: (req, res) => {
     return Restaurant.findByPk(req.params.id, {
