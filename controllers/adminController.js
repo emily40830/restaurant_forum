@@ -142,11 +142,16 @@ const adminController = {
     }
   },
   deleteRestaurant: (req, res) => {
-    return Restaurant.findByPk(req.params.id).then((restaurant) => {
-      restaurant.destroy().then(() => {
+    adminService.deleteRestaurant(req, res, (data) => {
+      if (data['status'] === 'success') {
         res.redirect('/admin/restaurants');
-      });
+      }
     });
+    // return Restaurant.findByPk(req.params.id).then((restaurant) => {
+    //   restaurant.destroy().then(() => {
+    //     res.redirect('/admin/restaurants');
+    //   });
+    // });
   },
   getUsers: (req, res) => {
     return User.findAll({ raw: true }).then((users) => {
