@@ -28,6 +28,7 @@ app.set('view engine', 'hbs');
 app.use(express.static('public'));
 
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json()); //可解析json資料
 app.use(session({ secret: 'secret', resave: false, saveUninitialized: false }));
 app.use(passport.initialize());
 app.use(passport.session());
