@@ -18,7 +18,10 @@ router.put(
   upload.single('image'),
   adminController.putRestaurant,
 );
-router.get('/admin/categories', categoryController.getCategories);
 router.delete('/admin/restaurants/:id', adminController.deleteRestaurant);
+
+// Category
+router.get('/admin/categories', categoryController.getCategories);
+router.post('/admin/categories', categoryController.postCategories);
 
 module.exports = router;

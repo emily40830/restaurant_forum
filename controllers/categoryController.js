@@ -8,33 +8,17 @@ const categoryController = {
     categoryService.getCategories(req, res, (data) => {
       return res.render('admin/categories', data);
     });
-    // return Category.findAll({ raw: true, nest: true }).then((categories) => {
-    //   if (req.params.id) {
-    //     Category.findByPk(req.params.id, { raw: true, nest: true }).then(
-    //       (category) => {
-    //         return res.render('admin/categories', {
-    //           categories: categories,
-    //           category: category,
-    //         });
-    //       },
-    //     );
-    //   } else {
-    //     return res.render('admin/categories', { categories });
-    //   }
-    // });
   },
   postCategories: (req, res) => {
-    if (!req.body.name) {
-      req.flash('error_messages', 'name did not exist');
-      return res.redirect('back');
-    } else {
-      return Category.create({
-        name: req.body.name,
-      }).then(() => {
-        req.flash('success_messages', 'category was successfully created');
+    categoryService.postCategories(req, res, (data) => {
+      if (data['status'] === 'error') {
+        req.flash('error_messages', data.messages);
+        return res.redirect('back');
+      } else {
+        req.flash('success_messages', data.messages);
         return res.redirect('/admin/categories');
-      });
-    }
+      }
+    });
   },
   putCategories: (req, res) => {
     //console.log(req.body);
