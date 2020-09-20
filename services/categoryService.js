@@ -38,6 +38,24 @@ const categoryService = {
       });
     }
   },
+  putCategories: (req, res, callback) => {
+    //console.log(req.body);
+    if (!req.body.name) {
+      callback({ status: 'error', messages: 'name did not exist.' });
+      // req.flash('error_messages', 'name did not exist.');
+      // return res.redirect('back');
+    } else {
+      return Category.findByPk(req.params.id).then((category) => {
+        category.update(req.body).then(() => {
+          callback({
+            status: 'success',
+            messages: 'category was successfully updated.',
+          });
+          //res.redirect('/admin/categories');
+        });
+      });
+    }
+  },
 };
 
 module.exports = categoryService;
