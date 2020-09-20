@@ -99,56 +99,65 @@ const adminController = {
     });
   },
   putRestaurant: (req, res) => {
-    console.log(req.body);
-    if (!req.body.name) {
-      req.flash('error_messages', 'name did not exist.');
-      return res.redirect('back');
-    }
-    const { file } = req;
-    if (file) {
-      imgur.setClientID(IMGUR_CLIENT_ID);
-      imgur.upload(file.path, (err, img) => {
-        return Restaurant.findByPk(req.params.id).then((restaurant) => {
-          restaurant
-            .update({
-              name: req.body.name,
-              tel: req.body.tel,
-              address: req.body.address,
-              opening_hours: req.body.opening_hours,
-              description: req.body.description,
-              image: file ? img.data.link : restaurant.image,
-              CategoryId: req.body.categoryId,
-            })
-            .then(() => {
-              req.flash(
-                'success_messages',
-                'restaurant was successfully to update',
-              );
-              res.redirect('/admin/restaurants');
-            });
-        });
-      });
-    } else {
-      return Restaurant.findByPk(req.params.id).then((restaurant) => {
-        restaurant
-          .update({
-            name: req.body.name,
-            tel: req.body.tel,
-            address: req.body.address,
-            opening_hours: req.body.opening_hours,
-            description: req.body.description,
-            image: restaurant.image,
-            CategoryId: req.body.categoryId,
-          })
-          .then(() => {
-            req.flash(
-              'success_messages',
-              'restaurant was successfully to update',
-            );
-            res.redirect('/admin/restaurants');
-          });
-      });
-    }
+    adminService.putRestaurant(req, res, (data) => {
+      if (data['status'] === 'error') {
+        req.flash('error_messages', data.messages);
+        return res.redirect('back');
+      } else {
+        req.flash('success_messages', data.messages);
+        res.redirect('/admin/restaurants');
+      }
+    });
+    //console.log(req.body);
+    // if (!req.body.name) {
+    //   req.flash('error_messages', 'name did not exist.');
+    //   return res.redirect('back');
+    // }
+    // const { file } = req;
+    // if (file) {
+    //   imgur.setClientID(IMGUR_CLIENT_ID);
+    //   imgur.upload(file.path, (err, img) => {
+    //     return Restaurant.findByPk(req.params.id).then((restaurant) => {
+    //       restaurant
+    //         .update({
+    //           name: req.body.name,
+    //           tel: req.body.tel,
+    //           address: req.body.address,
+    //           opening_hours: req.body.opening_hours,
+    //           description: req.body.description,
+    //           image: file ? img.data.link : restaurant.image,
+    //           CategoryId: req.body.categoryId,
+    //         })
+    //         .then(() => {
+    //           req.flash(
+    //             'success_messages',
+    //             'restaurant was successfully to update',
+    //           );
+    //           res.redirect('/admin/restaurants');
+    //         });
+    //     });
+    //   });
+    // } else {
+    //   return Restaurant.findByPk(req.params.id).then((restaurant) => {
+    //     restaurant
+    //       .update({
+    //         name: req.body.name,
+    //         tel: req.body.tel,
+    //         address: req.body.address,
+    //         opening_hours: req.body.opening_hours,
+    //         description: req.body.description,
+    //         image: restaurant.image,
+    //         CategoryId: req.body.categoryId,
+    //       })
+    //       .then(() => {
+    //         req.flash(
+    //           'success_messages',
+    //           'restaurant was successfully to update',
+    //         );
+    //         res.redirect('/admin/restaurants');
+    //       });
+    //   });
+    // }
   },
   deleteRestaurant: (req, res) => {
     adminService.deleteRestaurant(req, res, (data) => {
