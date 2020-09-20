@@ -45,4 +45,4 @@ app.listen(port, () => {
   console.log(`Running on localhost:${port}`);
 });
 
-routes(app, passport);
+routes(app);
