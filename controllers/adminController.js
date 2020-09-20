@@ -24,16 +24,19 @@ const adminController = {
     // });
   },
   getRestaurant: (req, res) => {
-    return Restaurant.findByPk(req.params.id, {
-      raw: true,
-      nest: true,
-      include: [Category],
-    }).then((restaurant) => {
-      //console.log(restaurant);
-      return res.render('admin/restaurant', {
-        restaurant: restaurant,
-      });
+    adminService.getRestaurant(req, res, (data) => {
+      return res.render('admin/restaurant', data);
     });
+    // return Restaurant.findByPk(req.params.id, {
+    //   raw: true,
+    //   nest: true,
+    //   include: [Category],
+    // }).then((restaurant) => {
+    //   //console.log(restaurant);
+    //   return res.render('admin/restaurant', {
+    //     restaurant: restaurant,
+    //   });
+    // });
   },
   createRestaurant: (req, res) => {
     Category.findAll({ raw: true, nest: true }).then((categories) => {
